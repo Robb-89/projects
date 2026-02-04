@@ -10,6 +10,17 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import pandas as pd
+import signal
+
+
+def _signal_exit(signum, frame):
+    print("\n[WARN] Interrupted by user (signal). Exiting.")
+    sys.exit(130)
+
+# Register signal handlers so Ctrl+C / Ctrl+Break exit cleanly with code 130
+signal.signal(signal.SIGINT, _signal_exit)
+if hasattr(signal, "SIGBREAK"):
+    signal.signal(signal.SIGBREAK, _signal_exit)
 
 
 # ----------------------------
@@ -799,4 +810,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
